@@ -25,7 +25,6 @@ import org.calrissian.restdoclet.model.RequestBody;
 
 import java.util.*;
 
-import static java.lang.Boolean.TRUE;
 import static java.util.Arrays.asList;
 import static org.calrissian.restdoclet.util.AnnotationUtils.getAnnotationName;
 import static org.calrissian.restdoclet.util.AnnotationUtils.getElementValue;
@@ -35,7 +34,7 @@ import static org.calrissian.restdoclet.util.TagUtils.*;
 
 public class SpringCollector extends AbstractCollector {
 
-    protected static final String CONTROLLER_ANNOTATION = Arrays.asList("org.springframework.stereotype.Controller",
+    protected static final List<String> CONTROLLER_ANNOTATION = asList("org.springframework.stereotype.Controller",
                                                                         "org.springframework.web.bind.annotation.RestController");
     protected static final String MAPPING_ANNOTATION = "org.springframework.web.bind.annotation.RequestMapping";
     protected static final String PATHVAR_ANNOTATION = "org.springframework.web.bind.annotation.PathVariable";
@@ -142,15 +141,15 @@ public class SpringCollector extends AbstractCollector {
                     List<String> requiredVals = getElementValue(annotation, "required");
 
                     //With spring query params are required by default
-                    boolean required = TRUE;
+                    boolean required = true;
                     if(!requiredVals.isEmpty())
                         required = Boolean.parseBoolean(requiredVals.get(0));
 
                     //With spring, if defaultValue is provided then "required" is set to false automatically
                     List<String> defaultVals = getElementValue(annotation, "defaultValue");
 
-                    if (!defaultVals.isEmpty()) 
-                        required = FALSE;
+                    if (!defaultVals.isEmpty())
+                        required = false;
 
                     //first check for special tag, then check regular param tag, finally default to empty string
                     String text = findParamText(tags, name);
